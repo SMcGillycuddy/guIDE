@@ -1,3 +1,15 @@
+'''
+guIDE is a lightweight text editor / IDE.
+
+Functionality: 
+File -> New, Open, Save, Save As..., Exit
+Edit -> Cut, Copy, Paste, Undo, Redo
+View -> ----TODO-----
+About -> About, Help
+
+@Seadna McGillycuddy
+'''
+
 #importing tkinter
 from tkinter import *
 
@@ -61,11 +73,8 @@ about_menu.add_command(label='Help')
 menu_bar.add_cascade(label='About',  menu=about_menu)
 
 
-
-
 #displaying the menu
 root.config(menu=menu_bar)
-
 
 #execute the mainloop() function
 root.mainloop()
