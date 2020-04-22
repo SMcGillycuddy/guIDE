@@ -22,16 +22,18 @@ root = Tk()
 root.geometry('350x350')
 #adding the title to the window
 root.title(PROGRAM_NAME)
+#adding an icon to the window
+root.iconphoto(False, PhotoImage(file='icons/guIDE_logo_30.png'))
 
 #specifing the icons for the menu
-new_file_icon = PhotoImage(file='icons/new_file.gif')
-open_file_icon = PhotoImage(file='icons/open_file.gif')
-save_file_icon = PhotoImage(file='icons/save.gif')
-cut_icon = PhotoImage(file='icons/cut.gif')
-copy_icon = PhotoImage(file='icons/copy.gif')
-paste_icon = PhotoImage(file='icons/paste.gif')
-undo_icon = PhotoImage(file='icons/undo.gif')
-redo_icon = PhotoImage(file='icons/redo.gif')
+new_file_icon = PhotoImage(file='icons/new_file.png')
+open_file_icon = PhotoImage(file='icons/open_file.png')
+save_file_icon = PhotoImage(file='icons/save.png')
+cut_icon = PhotoImage(file='icons/cut.png')
+copy_icon = PhotoImage(file='icons/copy.png')
+paste_icon = PhotoImage(file='icons/paste.png')
+undo_icon = PhotoImage(file='icons/undo.png')
+redo_icon = PhotoImage(file='icons/redo.png')
 
 #adding a menu bar
 menu_bar = Menu(root)
@@ -72,12 +74,12 @@ about_menu.add_command(label='Help')
 menu_bar.add_cascade(label='About',  menu=about_menu)
 
 #adding a frame for the horizontal shortcut icon bar with styling
-shortcut_bar = Frame(root, height=25, background='light sea green')
+shortcut_bar = Frame(root, height=25, background='#f0f0f0')
 #display the shortcut icon bar
 shortcut_bar.pack(expand='no', fill='x')
 
 #adding a frame for the vertical line number bar with styling
-line_number_bar = Text(root, width=4, padx=3, takefocus=0, border=0, background='khaki', state='disabled', wrap='none')
+line_number_bar = Text(root, width=4, padx=3, takefocus=0, border=0, background='#bfbfbf', state='disabled', wrap='none')
 #display the line number bar
 line_number_bar.pack(side='left', fill='y')
 
