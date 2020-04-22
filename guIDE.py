@@ -4,7 +4,7 @@ guIDE is a lightweight text editor / IDE.
 Functionality: 
 File -> New, Open, Save, Save As..., Exit
 Edit -> Cut, Copy, Paste, Undo, Redo
-View -> ----TODO-----
+View -> Show Line Numbers, Show Cursor Location, Highlight Current Line, Themes
 About -> About, Help
 Shortcut Icons, Scroll Bar, Line Numbers
 
@@ -62,10 +62,54 @@ edit_menu.add_separator()#add a separator
 edit_menu.add_command(label='Select All', underline=7, accelerator='Ctrl+A')
 menu_bar.add_cascade(label='Edit', menu=edit_menu)
 
-#-----TO DO-----#
-#adding and populating a view menu in the menu bar
+#adding a view menu in the menu bar
 view_menu = Menu(menu_bar, tearoff=0)
+#create a Integer variable to store the state of show line number
+show_line_no = IntVar()
+#setting the show_line_no variable to '1'
+show_line_no.set(1)
+#adding a checkbutton that allows the user to toggle the show line number function 
+view_menu.add_checkbutton(label="Show Line Numbers", variable=show_line_no)
+
+#acreating a variable that stores the state of show_cursor_info
+show_cursor_info = IntVar()
+#set the value of the show_cursor_info to '1'
+show_cursor_info.set(1)
+#adding a checkbutton to toggle showing the cursor location on/off
+view_menu.add_checkbutton(label='Show Cursor Location at Bottom', variable=show_cursor_info)
+#creating a variable to store the state of the highlight current line option
+highlight_line = IntVar()
+#adding a checkbutton to toggle highlighting the current line on/off
+view_menu.add_checkbutton(label='Highlight Current Line', onvalue=1, offvalue=0, variable=highlight_line)
+
+#creating a themes cascade menu inside the view menu
+themes_menu = Menu(menu_bar, tearoff=0)
+#adding a themes menu inside the view menu
+view_menu.add_cascade(label="Themes", menu=themes_menu)
+
+#setting the available colour schemes
+color_schemes = {
+	'Default': '#000000.#FFFFFF',
+	'Grey': '#83406A.#D1D4D1',
+	'Aqua': '#5B8340.#D1E7E0',
+	'Beige': '#4B4620.#FFF0E1',
+	'Cobalt': '#ffffBB.#3333aa',
+	'Olive': '#D1E7E0.#5B8340',
+	'Night Mode': '#FFFFFF.#000000',
+}
+
+#creating a variable that stores the selected theme
+theme_choice = StringVar()
+#setting the theme to default
+theme_choice.set('Default')
+#for loop that populates the themes menu with the various colour schemes
+for k in sorted(color_schemes):
+	#adding a radio button that allows user to select the colour scheme
+	themes_menu.add_radiobutton(label=k, variable=theme_choice)
+
+#adding the above widgets to the view menu
 menu_bar.add_cascade(label='View', menu=view_menu)
+
 
 #adding and populating an about menu in the menu bar
 about_menu = Menu(menu_bar, tearoff=0)
