@@ -6,6 +6,7 @@ File -> New, Open, Save, Save As..., Exit
 Edit -> Cut, Copy, Paste, Undo, Redo
 View -> ----TODO-----
 About -> About, Help
+Shortcut Icons, Scroll Bar, Line Numbers
 
 @Seadna McGillycuddy
 '''
@@ -59,12 +60,10 @@ edit_menu.add_separator()#add a separator
 edit_menu.add_command(label='Select All', underline=7, accelerator='Ctrl+A')
 menu_bar.add_cascade(label='Edit', menu=edit_menu)
 
-
-#----TO DO----
-#adding and populating a file menu in the menu bar
+#-----TO DO-----#
+#adding and populating a view menu in the menu bar
 view_menu = Menu(menu_bar, tearoff=0)
 menu_bar.add_cascade(label='View', menu=view_menu)
-
 
 #adding and populating an about menu in the menu bar
 about_menu = Menu(menu_bar, tearoff=0)
@@ -72,6 +71,26 @@ about_menu.add_command(label='About')
 about_menu.add_command(label='Help')
 menu_bar.add_cascade(label='About',  menu=about_menu)
 
+#adding a frame for the horizontal shortcut icon bar with styling
+shortcut_bar = Frame(root, height=25, background='light sea green')
+#display the shortcut icon bar
+shortcut_bar.pack(expand='no', fill='x')
+
+#adding a frame for the vertical line number bar with styling
+line_number_bar = Text(root, width=4, padx=3, takefocus=0, border=0, background='khaki', state='disabled', wrap='none')
+#display the line number bar
+line_number_bar.pack(side='left', fill='y')
+
+#adding the main content Text widget and Scrollbar widget
+content_text = Text(root, wrap='word')
+#display the main content Text widget
+content_text.pack(expand='yes', fill='both')
+#adding a scroll bar widget to the main text content widget
+scroll_bar = Scrollbar(content_text)
+content_text.configure(yscrollcommand=scroll_bar.set)
+scroll_bar.config(command=content_text.yview)
+#display the scroll bar
+scroll_bar.pack(side='right', fill='y')
 
 #displaying the menu
 root.config(menu=menu_bar)
