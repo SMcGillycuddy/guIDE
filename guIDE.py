@@ -37,6 +37,14 @@ def copy():
 def paste():
 	content_text.event_generate("<<Paste>>")
 
+def undo():
+	content_text.event_generate("<<Undo>>")
+
+def redo():
+	content_text.event_generate("<<Redo>>")
+
+
+
 #specifing the icons for the menu
 new_file_icon = PhotoImage(file='icons/new_file.png')
 open_file_icon = PhotoImage(file='icons/open_file.png')
@@ -62,8 +70,8 @@ menu_bar.add_cascade(label='File', menu=file_menu)
 
 #adding and populating an edit menu in the menu bar
 edit_menu = Menu(menu_bar, tearoff=0)
-edit_menu.add_command(label='Undo', accelerator='Ctrl+Z', compound='left', image=undo_icon)
-edit_menu.add_command(label='Redo', accelerator='Ctrl+Y', compound='left', image=redo_icon)
+edit_menu.add_command(label='Undo', accelerator='Ctrl+Z', compound='left', image=undo_icon, command=undo)
+edit_menu.add_command(label='Redo', accelerator='Ctrl+Y', compound='left', image=redo_icon, command=redo)
 edit_menu.add_separator()
 edit_menu.add_command(label='Cut', accelerator='Ctrl+X', compound='left', image=cut_icon, command=cut)
 edit_menu.add_command(label='Copy', accelerator='Ctrl+C', compound='left', image=copy_icon, command=copy)
@@ -140,10 +148,12 @@ line_number_bar = Text(root, width=4, padx=3, takefocus=0, border=0, background=
 line_number_bar.pack(side='left', fill='y')
 
 #adding the main content Text widget and Scrollbar widget
-content_text = Text(root, wrap='word')
+content_text = Text(root, wrap='word', undo=1)
 #display the main content Text widget
 content_text.pack(expand='yes', fill='both')
 #adding a scroll bar widget to the main text content widget
+content_text.bind('Control-y', redo)
+content_text.bind('Control-Y', redo)
 scroll_bar = Scrollbar(content_text)
 content_text.configure(yscrollcommand=scroll_bar.set)
 scroll_bar.config(command=content_text.yview)
