@@ -25,6 +25,18 @@ root.title(PROGRAM_NAME)
 #adding an icon to the window
 root.iconphoto(False, PhotoImage(file='icons/guIDE_logo_30.png'))
 
+#function that links the 'Cut' button to the cut functionality 
+def cut():
+	content_text.event_generate("<<Cut>>")
+
+#function that links the 'Cut' button to the cut functionality
+def copy():
+	content_text.event_generate("<<Copy>>")
+
+#function that links the 'Cut' button to the cut functionality
+def paste():
+	content_text.event_generate("<<Paste>>")
+
 #specifing the icons for the menu
 new_file_icon = PhotoImage(file='icons/new_file.png')
 open_file_icon = PhotoImage(file='icons/open_file.png')
@@ -53,9 +65,9 @@ edit_menu = Menu(menu_bar, tearoff=0)
 edit_menu.add_command(label='Undo', accelerator='Ctrl+Z', compound='left', image=undo_icon)
 edit_menu.add_command(label='Redo', accelerator='Ctrl+Y', compound='left', image=redo_icon)
 edit_menu.add_separator()
-edit_menu.add_command(label='Cut', accelerator='Ctrl+X', compound='left', image=cut_icon)
-edit_menu.add_command(label='Copy', accelerator='Ctrl+C', compound='left', image=copy_icon)
-edit_menu.add_command(label='Paste', accelerator='Ctrl+V', compound='left', image=paste_icon)
+edit_menu.add_command(label='Cut', accelerator='Ctrl+X', compound='left', image=cut_icon, command=cut)
+edit_menu.add_command(label='Copy', accelerator='Ctrl+C', compound='left', image=copy_icon, command=copy)
+edit_menu.add_command(label='Paste', accelerator='Ctrl+V', compound='left', image=paste_icon, command=paste)
 edit_menu.add_separator()#add a separator
 edit_menu.add_command(label='Find', underline=0, accelerator='Ctrl+F')
 edit_menu.add_separator()#add a separator
