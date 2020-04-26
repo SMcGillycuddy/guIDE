@@ -25,24 +25,26 @@ root.title(PROGRAM_NAME)
 #adding an icon to the window
 root.iconphoto(False, PhotoImage(file='icons/guIDE_logo_30.png'))
 
-#function that links the 'Cut' button to the cut functionality 
+def select_all(event=None):
+	content_text.tag_add('sel', '1.0', 'end')
+	return "break"
+
+#functions that link the text operations to their relative menu buttons
 def cut():
 	content_text.event_generate("<<Cut>>")
 
-#function that links the 'Cut' button to the cut functionality
 def copy():
 	content_text.event_generate("<<Copy>>")
 
-#function that links the 'Cut' button to the cut functionality
 def paste():
 	content_text.event_generate("<<Paste>>")
 
 def undo():
 	content_text.event_generate("<<Undo>>")
 
-def redo():
+def redo(event=None):
 	content_text.event_generate("<<Redo>>")
-
+	return 'break'
 
 
 #specifing the icons for the menu
@@ -79,7 +81,7 @@ edit_menu.add_command(label='Paste', accelerator='Ctrl+V', compound='left', imag
 edit_menu.add_separator()#add a separator
 edit_menu.add_command(label='Find', underline=0, accelerator='Ctrl+F')
 edit_menu.add_separator()#add a separator
-edit_menu.add_command(label='Select All', underline=7, accelerator='Ctrl+A')
+edit_menu.add_command(label='Select All', underline=7, accelerator='Ctrl+A', command=select_all)
 menu_bar.add_cascade(label='Edit', menu=edit_menu)
 
 #adding a view menu in the menu bar
@@ -154,6 +156,8 @@ content_text.pack(expand='yes', fill='both')
 #adding a scroll bar widget to the main text content widget
 content_text.bind('Control-y', redo)
 content_text.bind('Control-Y', redo)
+content_text.bind('Control-a', select_all)
+content_text.bind('Control-A', select_all)
 scroll_bar = Scrollbar(content_text)
 content_text.configure(yscrollcommand=scroll_bar.set)
 scroll_bar.config(command=content_text.yview)
