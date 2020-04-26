@@ -49,14 +49,19 @@ def select_all(event=None):
 
 #defining the find text function
 def find_text(event=None):
+	#creating a new top level window  specifying its geometry
 	search_toplevel = Toplevel(root)
+	#giving it a title
 	search_toplevel.title("Find Text")
+	#making it a transient window
 	search_toplevel.transient(root)
+	#making it non-resizable
 	search_toplevel.resizable(False, False)
 	Label(search_toplevel, text="Find All:").grid(row=0, column=0, sticky='e')
 	search_entry_widget = Entry(search_toplevel, width=25)
 	search_entry_widget.grid(row=0, column=1, padx=2, pady=2, sticky='we')
 	search_entry_widget.focus_set()
+	#creating a variable to store the state of the Ignore Case option 
 	ignore_case_value = IntVar()
 	Checkbutton(search_toplevel, text='Ignore Case', variable=ignore_case_value).grid(row=1, column=1, sticky='e', padx=2, pady=2)
 	Button(search_toplevel, text="Find All", underline=0, command=lambda: search_output(search_entry_widget.get(), ignore_case_value.get(), content_text, search_toplevel, search_entry_widget)).grid(row=0, column=2, sticky='e' + 'w', padx=2, pady=2)
