@@ -47,6 +47,50 @@ def open_file(event=None):
 		with open(file_name) as _file:
 			content_text.insert(1.0, _file.read())
 
+#defining the save function
+def save(event=None):
+	global file_name
+	#checking to see if there is a file open
+	if not file_name:
+		#if no file is open, call the save_as function
+		save_as()
+	else:
+		#or else call the write_to_file function
+		write_to_file(file_name)
+	return "break"
+
+#defining the save_as function
+def save_as(event=None):
+	#open the dialog so the user can input a filename
+	input_file_name = tkinter.filedialog.asksaveasfilename(defaultextension=".txt", filetypes=[("All Files", "*.*"), ("Text Documents", "*.txt")])
+	if input_file_name:
+		global file_name
+		file_name = input_file_name
+		#call the write_to_file function
+		write_to_file(file_name)
+		#adding the filename to the root window
+		root.title('{} - {}'.format(os.path.basename(file_name), PROGRAM_NAME))
+	return "break"
+
+#defining the write_to_file function
+def write_to_file(file_name):
+	try:
+		content = content_text.get(1.0, 'end')
+		with open(file_name, 'w') as the_file:
+			the_file.write(content)
+	except IOError:
+		pass
+
+#defining the new_file function
+def new_file(event=None):
+	#change the root window's title to 'Untitled'
+	root.title("Untitled")
+	global file_name
+	file_name = None
+	#delete the content of the text widget
+	content_text.delete(1.0, END)
+
+
 #defining the Cut, Copy, Paste, Undo, Redo functions
 def cut():
 	content_text.event_generate("<<Cut>>")
@@ -131,11 +175,11 @@ menu_bar = Menu(root)
 
 #adding and populating a file menu in the menu bar
 file_menu = Menu(menu_bar, tearoff=0)
-file_menu.add_command(label="New", accelerator='Ctrl+N', compound='left', image=new_file_icon, underline=0)
+file_menu.add_command(label="New", accelerator='Ctrl+N', compound='left', image=new_file_icon, underline=0, command=new_file)
 file_menu.add_command(label="Open", accelerator='Ctrl+O', compound='left', image=open_file_icon, underline=0, command=open_file)
-file_menu.add_command(label="Save", accelerator='Ctrl+S', compound='left', image=save_file_icon, underline=0)
+file_menu.add_command(label="Save", accelerator='Ctrl+S', compound='left', image=save_file_icon, underline=0, command=save)
 file_menu.add_separator()#add a separator
-file_menu.add_command(label="Save as...", accelerator='Shift+Ctrl+S')
+file_menu.add_command(label="Save as...", accelerator='Shift+Ctrl+S', command=save_as)
 file_menu.add_command(label="Exit", accelerator='Alt+F4')
 menu_bar.add_cascade(label='File', menu=file_menu)
 
