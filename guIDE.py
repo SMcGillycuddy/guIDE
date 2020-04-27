@@ -13,6 +13,13 @@ Shortcut Icons, Scroll Bar, Line Numbers
 
 #importing tkinter
 from tkinter import *
+#import the filedialog module
+import tkinter.filedialog
+#import the OS module
+import os
+
+#creating a global variable to store the name of the currently opened file
+file_name = None
 
 #giving the window a title
 PROGRAM_NAME = "guIDE"
@@ -24,6 +31,21 @@ root.geometry('350x350')
 root.title(PROGRAM_NAME)
 #adding an icon to the window
 root.iconphoto(False, PhotoImage(file='icons/guIDE_logo_30.png'))
+
+#defining the open file function
+def open_file(event=None):
+	#ask the user which file to open
+	input_file_name = tkinter.filedialog.askopenfilename(defaultextension=".txt", filetypes=[("All Files", "*.*"), ("Text Documents", "*.txt")])
+	if input_file_name:
+		global file_name
+		file_name = input_file_name
+		#adding the filename to the root window
+		root.title('{} - {}'.format(os.path.basename(file_name), PROGRAM_NAME))
+		#delete the contents of the text widget
+		content_text.delet(1.0, END)
+		#open the file in read mode and insert its content into the text widget
+		with open(file_name) as _file:
+			content_text.insert(1.0, _file.read())
 
 #defining the Cut, Copy, Paste, Undo, Redo functions
 def cut():
@@ -110,7 +132,7 @@ menu_bar = Menu(root)
 #adding and populating a file menu in the menu bar
 file_menu = Menu(menu_bar, tearoff=0)
 file_menu.add_command(label="New", accelerator='Ctrl+N', compound='left', image=new_file_icon, underline=0)
-file_menu.add_command(label="Open", accelerator='Ctrl+O', compound='left', image=open_file_icon, underline=0)
+file_menu.add_command(label="Open", accelerator='Ctrl+O', compound='left', image=open_file_icon, underline=0, command=open_file)
 file_menu.add_command(label="Save", accelerator='Ctrl+S', compound='left', image=save_file_icon, underline=0)
 file_menu.add_separator()#add a separator
 file_menu.add_command(label="Save as...", accelerator='Shift+Ctrl+S')
