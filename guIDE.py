@@ -281,6 +281,12 @@ content_text.bind('<Control-a>', select_all)
 content_text.bind('<Control-A>', select_all)
 content_text.bind('<Control-f>', find_text)
 content_text.bind('<Control-F>', find_text)
+content_text.bind('<Control-n>', new_file)
+content_text.bind('<Control-N>', new_file)
+content_text.bind('<Control-o>', open_file)
+content_text.bind('<Control-O>', open_file)
+content_text.bind('<Control-s>', save_file)
+content_text.bind('<Control-S>', save_file)
 
 
 #execute the mainloop() function
