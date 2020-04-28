@@ -170,9 +170,9 @@ def display_help_messagebox(event=None):
 	tkinter.messagebox.showinfo("Help", "--TO DO---\n Help text goes here", icon='question')
 
 #defining the function that terminates the program
-def exit_editor(event=None
+def exit_editor(event=None):
 	if tkinter.messagebox.askokcancel("Quit?", "Really Quit?"):
-		root.destroy
+		root.destroy()
 
 #specifing the icons for the menu
 new_file_icon = PhotoImage(file='icons/new_file.png')
@@ -259,7 +259,7 @@ menu_bar.add_cascade(label='View', menu=view_menu)
 
 #adding and populating an about menu in the menu bar
 about_menu = Menu(menu_bar, tearoff=0)
-about_menu.add_command(label='About', command=display_about_message)
+about_menu.add_command(label='About', command=display_about_messagebox)
 about_menu.add_command(label='Help', command=display_help_messagebox)
 menu_bar.add_cascade(label='About',  menu=about_menu)
 
