@@ -15,6 +15,8 @@ Shortcut Icons, Scroll Bar, Line Numbers
 from tkinter import *
 #import the filedialog module
 import tkinter.filedialog
+#importing the messagebox module
+import tkinter.messagebox
 #import the OS module
 import os
 
@@ -159,6 +161,14 @@ def search_output(needle, if_ignore_case, content_text,
     search_box.focus_set()
     search_toplevel.title('{} matches found'.format(matches_found))
 
+#defining the function that displays an about message
+def display_about_messagebox(event=None):
+	tkinter.messagebox.showinfo("About", "{}-{}".format(PROGRAM_NAME, "\nguIDE\n Copyright S. McGillycuddy 2020"))
+
+#defining the function that displays a help message
+def display_help_messagebox(event=None):
+	tkinter.messagebox.showinfo("Help", "--TO DO---\n Help text goes here", icon='question')
+
 
 #specifing the icons for the menu
 new_file_icon = PhotoImage(file='icons/new_file.png')
@@ -245,8 +255,8 @@ menu_bar.add_cascade(label='View', menu=view_menu)
 
 #adding and populating an about menu in the menu bar
 about_menu = Menu(menu_bar, tearoff=0)
-about_menu.add_command(label='About')
-about_menu.add_command(label='Help')
+about_menu.add_command(label='About', command=display_about_message)
+about_menu.add_command(label='Help', command=display_help_messagebox)
 menu_bar.add_cascade(label='About',  menu=about_menu)
 
 #displaying the menu
@@ -285,8 +295,8 @@ content_text.bind('<Control-n>', new_file)
 content_text.bind('<Control-N>', new_file)
 content_text.bind('<Control-o>', open_file)
 content_text.bind('<Control-O>', open_file)
-content_text.bind('<Control-s>', save_file)
-content_text.bind('<Control-S>', save_file)
+content_text.bind('<Control-s>', save)
+content_text.bind('<Control-S>', save)
 
 
 #execute the mainloop() function
