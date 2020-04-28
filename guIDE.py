@@ -169,6 +169,10 @@ def display_about_messagebox(event=None):
 def display_help_messagebox(event=None):
 	tkinter.messagebox.showinfo("Help", "--TO DO---\n Help text goes here", icon='question')
 
+#defining the function that terminates the program
+def exit_editor(event=None
+	if tkinter.messagebox.askokcancel("Quit?", "Really Quit?"):
+		root.destroy
 
 #specifing the icons for the menu
 new_file_icon = PhotoImage(file='icons/new_file.png')
@@ -190,7 +194,7 @@ file_menu.add_command(label="Open", accelerator='Ctrl+O', compound='left', image
 file_menu.add_command(label="Save", accelerator='Ctrl+S', compound='left', image=save_file_icon, underline=0, command=save)
 file_menu.add_separator()#add a separator
 file_menu.add_command(label="Save as...", accelerator='Shift+Ctrl+S', command=save_as)
-file_menu.add_command(label="Exit", accelerator='Alt+F4')
+file_menu.add_command(label="Exit", accelerator='Alt+F4', command=exit_editor)
 menu_bar.add_cascade(label='File', menu=file_menu)
 
 #adding and populating an edit menu in the menu bar
@@ -298,6 +302,7 @@ content_text.bind('<Control-O>', open_file)
 content_text.bind('<Control-s>', save)
 content_text.bind('<Control-S>', save)
 
+root.protocol('WM_DELETE_WINDOW', exit_editor)
 
 #execute the mainloop() function
 root.mainloop()
