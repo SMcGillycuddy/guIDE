@@ -28,7 +28,7 @@ PROGRAM_NAME = "guIDE"
 #creating a root window
 root = Tk()
 #giving the window a size
-root.geometry('350x350')
+root.geometry('700x700')
 #adding the title to the window
 root.title(PROGRAM_NAME)
 #adding an icon to the window
@@ -174,6 +174,7 @@ def exit_editor(event=None):
 	if tkinter.messagebox.askokcancel("Quit?", "Really Quit?"):
 		root.destroy()
 
+
 #specifing the icons for the menu
 new_file_icon = PhotoImage(file='icons/new_file.png')
 open_file_icon = PhotoImage(file='icons/open_file.png')
@@ -272,6 +273,16 @@ shortcut_bar = Frame(root, height=25, background='#f0f0f0')
 #display the shortcut icon bar
 shortcut_bar.pack(expand='no', fill='x')
 
+#adding the icons to the shortcut bar
+icons = ('new_file', 'open_file', 'save', 'cut', 'copy', 'paste', 'undo', 'redo', 'find_text')
+for i, icon in enumerate(icons):
+	tool_bar_icon = PhotoImage(file='icons/{}.png'.format(icon))
+	cmd = eval(icon)
+	tool_bar = Button(shortcut_bar, image=tool_bar_icon, command=cmd)
+	tool_bar.image = tool_bar_icon
+	tool_bar.pack(side='left')
+
+
 #adding a frame for the vertical line number bar with styling
 line_number_bar = Text(root, width=4, padx=3, takefocus=0, border=0, background='#bfbfbf', state='disabled', wrap='none')
 #display the line number bar
@@ -301,6 +312,7 @@ content_text.bind('<Control-o>', open_file)
 content_text.bind('<Control-O>', open_file)
 content_text.bind('<Control-s>', save)
 content_text.bind('<Control-S>', save)
+content_text.bind('<KeyPress-F1>', display_help_messagebox)
 
 root.protocol('WM_DELETE_WINDOW', exit_editor)
 
