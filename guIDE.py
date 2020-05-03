@@ -59,9 +59,25 @@ def toggle_highlight(event=None):
 	else:
 		undo_highlight()
 
+#defining the function that shows the position of the cursor
+def show_cursor_info_bar():
+	show_cursor_info_checked = show_cursor_info.get()
+	if show_cursor_info_checked:
+		cursor_info_bar.pack(expand='no', fill=None, side='right', anchor='se')
+	else:
+		cursor_info_bar.pack_forget()
+
+#defining the function that updates the cursor bar
+def update_cursor_info_bar(Event=None):
+	row, col = content_text.index(INSERT).split('.')
+	line_num, col_num = str(int(row)), str(int(col)+1)
+	infotext = "Line: {0} | Column {1}".format(line_num, col_num)
+	cursor_info_bar.config(text=infotext)
+
 #defining the function that executes when the content has been changed 
 def on_content_changed(event=None):
 	update_line_numbers()
+	update_cursor_info_bar()
 
 #defining the function that gets the line number
 def get_line_numbers():
@@ -280,7 +296,7 @@ show_cursor_info = IntVar()
 #set the value of the show_cursor_info to '1'
 show_cursor_info.set(1)
 #adding a checkbutton to toggle showing the cursor location on/off
-view_menu.add_checkbutton(label='Show Cursor Location at Bottom', variable=show_cursor_info)
+view_menu.add_checkbutton(label='Show Cursor Location at Bottom', variable=show_cursor_info, command=show_cursor_info_bar)
 			#creating a variable to store the state of the highlight current line option
 			#highlight_line = IntVar()
 #creating a boolean variable for the highlight line option
@@ -353,6 +369,10 @@ content_text.configure(yscrollcommand=scroll_bar.set)
 scroll_bar.config(command=content_text.yview)
 #display the scroll bar
 scroll_bar.pack(side='right', fill='y')
+
+#adding cursor information label
+cursor_info_bar = Label(content_text, text='Line: 1 | Column: 1')
+cursor_info_bar.pack(expand=NO, fill=None, side=RIGHT, anchor='se')
 
 #adding key bindings for the operations
 content_text.bind('<Control-y>', redo)
