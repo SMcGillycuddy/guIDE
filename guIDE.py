@@ -42,17 +42,22 @@ def update_line_numbers(event=None):
 	line_number_bar.insert('1.0', line_numbers)
 	line_number_bar.config(state='disabled')
 
-#---TO DO------
 #defining the function that highlights lines
-#def highlight_line():
+def highlight_line(interval=100):
+	content_text.tag_remove("active_line", 1.0, "end")
+	content_text.tag_add("active_line", "insert linestart", "insert lineend+1c")
+	content_text.after(interval, toggle_highlight)
 
-#---TO DO------
 #defining the function that undos the higlight line
-#def undo_highlight():
+def undo_highlight():
+	content_text.tag_remove("active_line", 1.0, "end")
 
-#---TO DO-----
 #defining the function that toggles wether line highlighting is on or off
-#def toggle_highlight():
+def toggle_highlight(event=None):
+	if to_highlight_line.get():
+		highlight_line()
+	else:
+		undo_highlight()
 
 #defining the function that executes when the content has been changed 
 def on_content_changed(event=None):
@@ -266,6 +271,8 @@ view_menu = Menu(menu_bar, tearoff=0)
 show_line_number = IntVar()
 #setting the show_line_no variable to '1'
 show_line_number.set(1)
+#creating a boolean variable for the highlight line option
+to_highlight_line = BooleanVar()
 #adding a checkbutton that allows the user to toggle the show line number function 
 view_menu.add_checkbutton(label="Show Line Numbers", variable=show_line_number)
 #acreating a variable that stores the state of show_cursor_info
@@ -274,10 +281,12 @@ show_cursor_info = IntVar()
 show_cursor_info.set(1)
 #adding a checkbutton to toggle showing the cursor location on/off
 view_menu.add_checkbutton(label='Show Cursor Location at Bottom', variable=show_cursor_info)
-#creating a variable to store the state of the highlight current line option
-highlight_line = IntVar()
+			#creating a variable to store the state of the highlight current line option
+			#highlight_line = IntVar()
+#creating a boolean variable for the highlight line option
+to_highlight_line = BooleanVar()
 #adding a checkbutton to toggle highlighting the current line on/off
-view_menu.add_checkbutton(label='Highlight Current Line', onvalue=1, offvalue=0, variable=highlight_line)
+view_menu.add_checkbutton(label='Highlight Current Line', onvalue=1, offvalue=0, variable=to_highlight_line, command=toggle_highlight)
 
 #creating a themes cascade menu inside the view menu
 themes_menu = Menu(menu_bar, tearoff=0)
