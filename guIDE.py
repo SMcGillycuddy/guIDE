@@ -11,20 +11,20 @@ Shortcut Icons, Scroll Bar, Line Numbers
 @Seadna McGillycuddy
 '''
 
+#import the OS module
+import os
 #importing tkinter
 from tkinter import *
 #import the filedialog module
 import tkinter.filedialog
 #importing the messagebox module
 import tkinter.messagebox
-#import the OS module
-import os
-
-#creating a global variable to store the name of the currently opened file
-file_name = None
 
 #giving the window a title
 PROGRAM_NAME = "guIDE"
+#creating a global variable to store the name of the currently opened file
+file_name = None
+
 #creating a root window
 root = Tk()
 #giving the window a size
@@ -33,6 +33,63 @@ root.geometry('700x700')
 root.title(PROGRAM_NAME)
 #adding an icon to the window
 root.iconphoto(False, PhotoImage(file='icons/guIDE_logo_30.png'))
+
+#defining the function that updates the line number
+def update_line_numbers(event=None):
+	line_numbers = get_line_numbers()
+	line_number_bar.config(state='normal')
+	line_number_bar.delete('1.0','end')
+	line_number_bar.insert('1.0', line_numbers)
+	line_number_bar.config(state='disabled')
+
+#---TO DO------
+#defining the function that highlights lines
+#def highlight_line():
+
+#---TO DO------
+#defining the function that undos the higlight line
+#def undo_highlight():
+
+#---TO DO-----
+#defining the function that toggles wether line highlighting is on or off
+#def toggle_highlight():
+
+#defining the function that executes when the content has been changed 
+def on_content_changed(event=None):
+	update_line_numbers()
+
+#defining the function that gets the line number
+def get_line_numbers():
+	output = ''
+	if show_line_number.get():
+		row, col = content_text.index("end").split('.')
+		for i in range(1, int(row)):
+			output += str(i) + '\n'
+	return output
+
+#defining the function that displays an about message
+def display_about_messagebox(event=None):
+	tkinter.messagebox.showinfo("About", "{}-{}".format(PROGRAM_NAME, "\nguIDE\n Copyright S. McGillycuddy 2020"))
+
+#defining the function that displays a help message
+def display_help_messagebox(event=None):
+	tkinter.messagebox.showinfo("Help", "--TO DO---\n Help text goes here", icon='question')
+
+#defining the function that terminates the program
+def exit_editor(event=None):
+	if tkinter.messagebox.askokcancel("Quit?", "Really Quit?"):
+		root.destroy()
+
+#defining the new_file function
+def new_file(event=None):
+	#change the root window's title to 'Untitled'
+	root.title("Untitled")
+	global file_name
+	file_name = None
+	#delete the content of the text widget
+	content_text.delete(1.0, END)
+	#call the on_content_changed function
+	on_content_changed()
 
 #defining the open file function
 def open_file(event=None):
@@ -48,18 +105,17 @@ def open_file(event=None):
 		#open the file in read mode and insert its content into the text widget
 		with open(file_name) as _file:
 			content_text.insert(1.0, _file.read())
+	#call the on_content_changed function
+	on_content_changed()
 
-#defining the save function
-def save(event=None):
-	global file_name
-	#checking to see if there is a file open
-	if not file_name:
-		#if no file is open, call the save_as function
-		save_as()
-	else:
-		#or else call the write_to_file function
-		write_to_file(file_name)
-	return "break"
+#defining the write_to_file function
+def write_to_file(file_name):
+	try:
+		content = content_text.get(1.0, 'end')
+		with open(file_name, 'w') as the_file:
+			the_file.write(content)
+	except IOError:
+		tkinter.messagebox.showwarning("Save", "Could not save this file.")
 
 #defining the save_as function
 def save_as(event=None):
@@ -74,41 +130,17 @@ def save_as(event=None):
 		root.title('{} - {}'.format(os.path.basename(file_name), PROGRAM_NAME))
 	return "break"
 
-#defining the write_to_file function
-def write_to_file(file_name):
-	try:
-		content = content_text.get(1.0, 'end')
-		with open(file_name, 'w') as the_file:
-			the_file.write(content)
-	except IOError:
-		pass
-
-#defining the new_file function
-def new_file(event=None):
-	#change the root window's title to 'Untitled'
-	root.title("Untitled")
+#defining the save function
+def save(event=None):
 	global file_name
-	file_name = None
-	#delete the content of the text widget
-	content_text.delete(1.0, END)
-
-
-#defining the Cut, Copy, Paste, Undo, Redo functions
-def cut():
-	content_text.event_generate("<<Cut>>")
-
-def copy():
-	content_text.event_generate("<<Copy>>")
-
-def paste():
-	content_text.event_generate("<<Paste>>")
-
-def undo():
-	content_text.event_generate("<<Undo>>")
-
-def redo(event=None):
-	content_text.event_generate("<<Redo>>")
-	return 'break'
+	#checking to see if there is a file open
+	if not file_name:
+		#if no file is open, call the save_as function
+		save_as()
+	else:
+		#or else call the write_to_file function
+		write_to_file(file_name)
+	return "break"
 
 #defining the select all function
 def select_all(event=None):
@@ -161,19 +193,35 @@ def search_output(needle, if_ignore_case, content_text,
     search_box.focus_set()
     search_toplevel.title('{} matches found'.format(matches_found))
 
-#defining the function that displays an about message
-def display_about_messagebox(event=None):
-	tkinter.messagebox.showinfo("About", "{}-{}".format(PROGRAM_NAME, "\nguIDE\n Copyright S. McGillycuddy 2020"))
 
-#defining the function that displays a help message
-def display_help_messagebox(event=None):
-	tkinter.messagebox.showinfo("Help", "--TO DO---\n Help text goes here", icon='question')
+#defining the Cut, Copy, Paste, Undo, Redo functions
+def cut():
+	content_text.event_generate("<<Cut>>")
+	#call the on_content_changed function
+	on_content_changed()
+	return "break"
 
-#defining the function that terminates the program
-def exit_editor(event=None):
-	if tkinter.messagebox.askokcancel("Quit?", "Really Quit?"):
-		root.destroy()
+def copy():
+	content_text.event_generate("<<Copy>>")
+	return "break"
 
+def paste():
+	content_text.event_generate("<<Paste>>")
+	#call the on_content_changed function
+	on_content_changed()
+	return "break"
+
+def undo():
+	content_text.event_generate("<<Undo>>")
+	#call the on_content_changed function
+	on_content_changed()
+	return "break"
+
+def redo(event=None):
+	content_text.event_generate("<<Redo>>")
+	#call the on_content_changed function
+	on_content_changed()
+	return "break"
 
 #specifing the icons for the menu
 new_file_icon = PhotoImage(file='icons/new_file.png')
@@ -215,11 +263,11 @@ menu_bar.add_cascade(label='Edit', menu=edit_menu)
 #adding a view menu in the menu bar
 view_menu = Menu(menu_bar, tearoff=0)
 #create a Integer variable to store the state of show line number
-show_line_no = IntVar()
+show_line_number = IntVar()
 #setting the show_line_no variable to '1'
-show_line_no.set(1)
+show_line_number.set(1)
 #adding a checkbutton that allows the user to toggle the show line number function 
-view_menu.add_checkbutton(label="Show Line Numbers", variable=show_line_no)
+view_menu.add_checkbutton(label="Show Line Numbers", variable=show_line_number)
 #acreating a variable that stores the state of show_cursor_info
 show_cursor_info = IntVar()
 #set the value of the show_cursor_info to '1'
@@ -267,7 +315,6 @@ menu_bar.add_cascade(label='About',  menu=about_menu)
 #displaying the menu
 root.config(menu=menu_bar)
 
-
 #adding a frame for the horizontal shortcut icon bar with styling
 shortcut_bar = Frame(root, height=25, background='#f0f0f0')
 #display the shortcut icon bar
@@ -281,7 +328,6 @@ for i, icon in enumerate(icons):
 	tool_bar = Button(shortcut_bar, image=tool_bar_icon, command=cmd)
 	tool_bar.image = tool_bar_icon
 	tool_bar.pack(side='left')
-
 
 #adding a frame for the vertical line number bar with styling
 line_number_bar = Text(root, width=4, padx=3, takefocus=0, border=0, background='#bfbfbf', state='disabled', wrap='none')
@@ -313,6 +359,8 @@ content_text.bind('<Control-O>', open_file)
 content_text.bind('<Control-s>', save)
 content_text.bind('<Control-S>', save)
 content_text.bind('<KeyPress-F1>', display_help_messagebox)
+content_text.bind('<Any-KeyPress>', on_content_changed)
+content_text.tag_configure('active_line', background='ivory2')
 
 root.protocol('WM_DELETE_WINDOW', exit_editor)
 
