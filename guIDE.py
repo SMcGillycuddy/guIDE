@@ -221,6 +221,10 @@ def change_theme(event=None):
 	foreground_color, background_color = fg_bg_colors.split('.')
 	content_text.config(background=background_color, fg=foreground_color)
 
+#defining the function that shows a context menu
+def show_popup_menu(event):
+	popup_menu.tk_popup(event.x_root, event.y_root)
+
 
 #defining the Cut, Copy, Paste, Undo, Redo functions
 def cut():
@@ -372,6 +376,14 @@ scroll_bar.config(command=content_text.yview)
 #display the scroll bar
 scroll_bar.pack(side='right', fill='y')
 
+#adding a context menu
+popup_menu = Menu(content_text)
+for i in ('cut', 'copy', 'paste', 'undo', 'redo'):
+	cmd = eval(i)
+	popup_menu.add_command(label=i, compound='left', command=cmd)
+popup_menu.add_separator()
+popup_menu.add_command(label='Select All', underline=7, command=select_all)
+
 #adding cursor information label
 cursor_info_bar = Label(content_text, text='Line: 1 | Column: 1')
 cursor_info_bar.pack(expand=NO, fill=None, side=RIGHT, anchor='se')
@@ -392,6 +404,7 @@ content_text.bind('<Control-S>', save)
 content_text.bind('<KeyPress-F1>', display_help_messagebox)
 content_text.bind('<Any-KeyPress>', on_content_changed)
 content_text.tag_configure('active_line', background='ivory2')
+content_text.bind('<Button-3>', show_popup_menu)
 
 root.protocol('WM_DELETE_WINDOW', exit_editor)
 
