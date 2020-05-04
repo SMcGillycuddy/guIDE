@@ -214,6 +214,13 @@ def search_output(needle, if_ignore_case, content_text,
     search_box.focus_set()
     search_toplevel.title('{} matches found'.format(matches_found))
 
+#defining a function that allows the user to change the colour scheme / theme
+def change_theme(event=None):
+	selected_theme = theme_choice.get()
+	fg_bg_colors = color_schemes.get(selected_theme)
+	foreground_color, background_color = fg_bg_colors.split('.')
+	content_text.config(background=background_color, fg=foreground_color)
+
 
 #defining the Cut, Copy, Paste, Undo, Redo functions
 def cut():
@@ -307,17 +314,12 @@ view_menu.add_checkbutton(label='Highlight Current Line', onvalue=1, offvalue=0,
 #creating a themes cascade menu inside the view menu
 themes_menu = Menu(menu_bar, tearoff=0)
 #adding a themes menu inside the view menu
-view_menu.add_cascade(label="Themes", menu=themes_menu)
+view_menu.add_cascade(label='Themes', menu=themes_menu)
 
 #setting the available colour schemes
 color_schemes = {
-	'Default': '#000000.#FFFFFF',
-	'Grey': '#83406A.#D1D4D1',
-	'Aqua': '#5B8340.#D1E7E0',
-	'Beige': '#4B4620.#FFF0E1',
-	'Cobalt': '#ffffBB.#3333aa',
-	'Olive': '#D1E7E0.#5B8340',
-	'Night Mode': '#FFFFFF.#000000',
+	'Light Mode': '#000000.#FFFFFF',
+	'Dark Mode': '#FFFFFF.#525252',
 }
 
 #creating a variable that stores the selected theme
@@ -327,7 +329,7 @@ theme_choice.set('Default')
 #for loop that populates the themes menu with the various colour schemes
 for k in sorted(color_schemes):
 	#adding a radio button that allows user to select the colour scheme
-	themes_menu.add_radiobutton(label=k, variable=theme_choice)
+	themes_menu.add_radiobutton(label=k, variable=theme_choice, command=change_theme)
 #adding the above widgets to the view menu
 menu_bar.add_cascade(label='View', menu=view_menu)
 
@@ -341,7 +343,7 @@ menu_bar.add_cascade(label='About',  menu=about_menu)
 root.config(menu=menu_bar)
 
 #adding a frame for the horizontal shortcut icon bar with styling
-shortcut_bar = Frame(root, height=25, background='#f0f0f0')
+shortcut_bar = Frame(root, height=30, background='#f7f7f7')
 #display the shortcut icon bar
 shortcut_bar.pack(expand='no', fill='x')
 
@@ -355,7 +357,7 @@ for i, icon in enumerate(icons):
 	tool_bar.pack(side='left')
 
 #adding a frame for the vertical line number bar with styling
-line_number_bar = Text(root, width=4, padx=3, takefocus=0, border=0, background='#bfbfbf', state='disabled', wrap='none')
+line_number_bar = Text(root, width=4, padx=3, takefocus=0, border=0, background='#8a8a8a', state='disabled', wrap='none')
 #display the line number bar
 line_number_bar.pack(side='left', fill='y')
 
